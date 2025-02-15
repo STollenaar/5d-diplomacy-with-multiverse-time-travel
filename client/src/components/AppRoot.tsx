@@ -4,7 +4,7 @@ import SetupRoot from './SetupRoot';
 import { WorldContextProvider } from './context/WorldContext';
 import GameRoot from './GameRoot';
 
-const AppRoot = () => {
+const AppRoot = ({ token }: { token: string | null }) => {
   const { game } = useContext(GameContext);
 
   return (
