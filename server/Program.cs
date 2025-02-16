@@ -25,6 +25,7 @@ switch (provider)
     case "Sqlite":
         {
             builder.Services.AddDbContext<GameContext, SqliteGameContext>();
+            builder.Services.AddDbContext<UserContext, SqliteUserContext>();
             break;
         }
     case "SqlServer":

@@ -12,3 +12,14 @@ public class SqliteGameContext(IConfiguration configuration) : GameContext
         optionsBuilder.UseSqlite(configuration.GetConnectionString("Sqlite"));
     }
 }
+
+public class SqliteUserContext(IConfiguration configuration) : UserContext
+{
+    private readonly IConfiguration configuration = configuration;
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlite(configuration.GetConnectionString("Sqlite"));
+    }
+}

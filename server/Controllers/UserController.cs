@@ -9,14 +9,14 @@ using Microsoft.IdentityModel.Tokens;
 namespace Controllers;
 
 [ApiController]
-[Route("user")]
+[Route("auth")]
 public class UserController(
     ILogger<UserController> logger,
     IUserRepository userRepository,
     IConfiguration configuration
 ) : ControllerBase
 {
-    private readonly ILogger<UserController> logger = logger;
+    private readonly ILogger<UserController> _logger = logger;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IConfiguration _configuration = configuration;
 
@@ -27,12 +27,20 @@ public class UserController(
         var user = _userRepository.GetUserByUsernameAndPassword(loginRequest.Username, loginRequest.Password);
         if (user == null)
         {
-            logger.LogInformation("Invalid username attempt");
+            _logger.LogInformation("Invalid login attempt");
             return Unauthorized("Invalid username or password");
         }
 
         var token = GenerateJwtToken(user);
         return Ok(new { token });
+    }
+
+    [HttpPost]
+    [Route("register")]
+    public IActionResult Register([FromBody] User user)
+    {
+        _userRepository.CreateUser(user);
+        return Ok();
     }
 
     private string GenerateJwtToken(User user)
